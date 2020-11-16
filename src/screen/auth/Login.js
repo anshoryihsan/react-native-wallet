@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import style from '../../style/auth';
 import styleLoading from '../../style/loading';
 import {
@@ -13,7 +13,6 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Input} from 'react-native-elements';
 import {AuthLogin} from '../../redux/actions/Auth';
 import {useDispatch} from 'react-redux';
-import Axios from 'axios';
 
 function Login(props) {
   const [email, setEmail] = useState('');
@@ -27,27 +26,11 @@ function Login(props) {
       return true;
     }
   };
-
-  const onSubmit = async () => {
-    setLoading(false);
-    // console.log({email, password});
-    // const url = 'https://localhost:8080/api/v1/auth/login';
-    // await Axios.post(url, {email: 'a@a.com', password: 'a'})
-    //   .then((res) => {
-    //     console.log(res);
-    //     // if (res.data.success) {
-    //     //   // return dispatch(authSuccess(res.data.data));
-    //     //   // if (res.data.data.role !== 24) return history.push('/home');
-    //     //   // return history.push('/home');
-    //     // } else {
-    //     //   // return dispatch(authError(res.data.data));
-    //     // }
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     // return dispatch(authError(err.data));
-    //   });
-    dispatch(AuthLogin({email, password}));
+  const onSubmit = () => {
+    setLoading(true);
+    if (!allEmpty()) {
+      dispatch(AuthLogin({email, password}, props.navigation));
+    }
     setLoading(false);
   };
 

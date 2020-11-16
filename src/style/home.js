@@ -24,6 +24,18 @@ export default StyleSheet.create({
     borderColor: '#eeeeee',
     elevation: 1,
   },
+  balanceInfo: {
+    flexDirection: 'column',
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+  },
+  balanceAmont: {
+    color: '#ffffff',
+    fontSize: 30,
+    paddingBottom: 11,
+    paddingTop: 11,
+    fontWeight: 'bold',
+  },
   operation: {
     marginTop: 10,
     flexDirection: 'row',

@@ -1,10 +1,12 @@
 const initialState = {
   userdata: {},
-  userdatahistory: [],
   getalluserdata: [],
+  userdatahistory: [],
+  userdatatransaction: {},
   insertuserdata: {},
 
-  error: '',
+  success: false,
+  message: '',
 };
 
 const User = (state = initialState, action) => {
@@ -20,6 +22,11 @@ const User = (state = initialState, action) => {
         ...state,
         userdatahistory: payload,
       };
+    case 'USER_DATA_TRANSACTION':
+      return {
+        ...state,
+        userdatatransaction: payload,
+      };
     case 'GET_All_USER_DATA':
       return {
         ...state,
@@ -33,7 +40,8 @@ const User = (state = initialState, action) => {
     case 'UPDATE_USER_DATA':
       return {
         ...state,
-        updateuserdata: payload,
+        success: true,
+        message: '',
       };
     case 'UPDATE_USER_PHONE':
       return {
@@ -60,10 +68,21 @@ const User = (state = initialState, action) => {
         ...state,
         delete: payload,
       };
-    case 'AUTH_ERROR':
+    case 'STATUS_ERROR':
       return {
         ...state,
-        error: payload,
+        message: payload,
+      };
+    case 'CLEAR':
+      return {
+        ...state,
+        userdata: {},
+        getalluserdata: [],
+        userdatahistory: [],
+        userdatatransaction: {},
+        insertuserdata: {},
+        success: false,
+        message: '',
       };
     default:
       return state;

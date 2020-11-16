@@ -7,47 +7,59 @@ const authError = (error) => {
   return {type: 'AUTH_ERROR', payload: error};
 };
 const authLogout = (error) => {
-  return {type: 'LOGOUT', payload: error};
+  return {type: 'LOGOUT'};
 };
-// import AsyncStorage from '@react-native-community/async-storage';
+const isAdmin = () => {
+  return {type: 'IS_ADMINfalse'};
+};
+const isUser = () => {
+  return {type: 'IS_USER'};
+};
+
 export const AuthLogin = (data) => (dispatch) => {
-  // const {email, password} = data;
-  const c = {email: 'as', password: 'sd'};
-  // console.log(email);
-  axios
-    .post('/auth/login', c)
+  return axios
+    .post('/auth/login', data)
     .then((res) => {
-      if (res.data.success) {
-        // return dispatch(authSuccess(res.data.data));
-        // if (res.data.data.role !== 24) return history.push('/home');
-        // return history.push('/home');
+      if (res.data.success === true) {
+        if (res.data.data.role === 24) {
+          dispatch(isAdmin());
+          dispatch(authSuccess(res.data.data));
+        } else {
+          dispatch(isUser());
+          dispatch(authSuccess(res.data.data));
+        }
       } else {
-        // return dispatch(authError(res.data.data));
+        dispatch(authError(res.data.data));
       }
     })
     .catch((err) => {
-      return dispatch(authError(err.data));
+      // console.log(err, 'errorssss');
+      // return callback(err, false);
+      dispatch(authError(err.data));
     });
 };
 
-// export const AuthSignup = (data, history) => (dispatch) => {
-//   console.log(data);
-//   axios
-//     .post('/auth/register', data)
-//     .then((res) => {
-//       if (res.data.success) {
-//         dispatch(authSuccess(res.data.data));
-//         return history.replace(`/login`);
-//       } else {
-//         dispatch(authError(res.data.data));
-//       }
-//     })
-//     .catch((err) => {
-//       dispatch(authError(err.data));
-//     });
-// };
+export const AuthSignup = (data, navigation) => (dispatch) => {
+  // console.log(navigation, 'data');
+  axios
+    .post('/auth/register', data)
+    .then((res) => {
+      if (res.data.success) {
+        // console.log(res, 'suksess');
+        dispatch(authSuccess(res.data.data));
+        return navigation.navigate('Login');
+      } else {
+        console.log(res, 'gagal');
+        // dispatch(authError(res.data.data));
+      }
+    })
+    .catch((err) => {
+      console.log(err, 'eror');
+      dispatch(authError(err.data));
+    });
+};
 
-// export const AuthLogout = (history) => (dispatch) => {
-//   dispatch(authLogout(undefined));
-//   return history.push('/');
-// };
+export const AuthLogout = () => (dispatch) => {
+  dispatch(authLogout());
+  //   return history.push('/');
+};

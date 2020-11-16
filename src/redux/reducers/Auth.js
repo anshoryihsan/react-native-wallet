@@ -4,6 +4,8 @@ const initialState = {
   token: '',
   role: '',
   error: '',
+  isAdmin: false,
+  isUser: false,
 };
 // import AsyncStorage from '@react-native-community/async-storage';
 const Auth = (state = initialState, action) => {
@@ -32,15 +34,24 @@ const Auth = (state = initialState, action) => {
     case 'LOGOUT':
       return {
         ...state,
-        token: payload,
-        role: payload,
-        error: payload,
+        token: '',
+        role: '',
+        error: '',
+        isAdmin: false,
+        isUser: false,
       };
-    // case 'SIGNUP_REQUEST':
-    //   return {
-    //     ...state,
-    //     loading: true,
-    //   };
+    case 'IS_ADMIN':
+      return {
+        ...state,
+        isAdmin: true,
+        isUser: false,
+      };
+    case 'IS_USER':
+      return {
+        ...state,
+        isAdmin: false,
+        isUser: true,
+      };
     // case 'SIGNUP_SUCCESS':
     //   return {
     //     ...state,

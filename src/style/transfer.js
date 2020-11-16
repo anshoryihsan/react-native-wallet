@@ -38,5 +38,13 @@ export default StyleSheet.create({
   },
   content: {
     paddingVertical: 30,
+    marginHorizontal: 10,
+  },
+  imgList: {
+    width: 56,
+    height: 56,
+    borderRadius: 10,
+    marginRight: 10,
+    resizeMode: 'cover',
   },
 });
