@@ -5,6 +5,9 @@ import avatar from '../../assets/img/user_.webp';
 import {View, Text, StatusBar, TouchableOpacity, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon2 from 'react-native-vector-icons/AntDesign';
+import io from 'socket.io-client';
+import {SOCKET_URL} from '../../helpers/environment';
+import PushNotification from 'react-native-push-notification';
 
 function Home(props) {
   const {Auth, User} = useSelector((state) => state);
