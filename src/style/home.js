@@ -37,12 +37,12 @@ export default StyleSheet.create({
     fontWeight: 'bold',
   },
   operation: {
-    marginTop: 10,
+    marginTop: -5,
     flexDirection: 'row',
     justifyContent: 'space-between',
     // padding: 20,
     paddingVertical: 20,
-    marginBottom: 10,
+    // marginBottom: 5,
   },
   transfer: {
     backgroundColor: '#DADBDD',

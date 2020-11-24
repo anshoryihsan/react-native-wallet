@@ -11,6 +11,7 @@ import SplashScreen from './SplashScreen';
 import ChangePassword from './ChangePassword';
 import ChangePin from './ChangePin';
 import Notif from './Notif';
+import TransferHistory from './TransferHistory';
 
 export {
   Home,
@@ -26,4 +27,5 @@ export {
   ChangePassword,
   ChangePin,
   Notif,
+  TransferHistory,
 };

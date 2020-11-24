@@ -5,14 +5,15 @@ import {View, Text, StatusBar, ToastAndroid} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import InputPin from '../../components/InputText/InputPIN';
 import Button from '../../components/Button/BigButton';
-import {UpdateUserData} from '../../redux/actions/User';
+import {Transfer} from '../../redux/actions/Transfer';
 
 function TransferPIN(props) {
   const {amount, note} = props.route.params;
+  // console.log(amount);
   const [pin, setPin] = useState('');
-  const [loading, setLoading] = useState(false);
   const {token} = useSelector((state) => state.Auth);
-  const {success, message, userdata} = useSelector((state) => state.User);
+  const {userdata, userdatatransaction} = useSelector((state) => state.User);
+  const {loading} = useSelector((state) => state.Transfer);
   const dispatch = useDispatch();
   const isActive = () => {
     if (pin.length < 6) {
@@ -22,29 +23,28 @@ function TransferPIN(props) {
     }
   };
   const onSubmit = () => {
-    setLoading(true);
     if (pin.length < 6) {
       ToastAndroid.show('fill out the form correctly!', ToastAndroid.SHORT);
     } else {
       if (pin == userdata.pin) {
         ToastAndroid.show('Proses..', ToastAndroid.SHORT);
-        // dispatch();
+        dispatch(
+          Transfer(token, {
+            receiver_id: userdatatransaction.id,
+            amount: amount,
+            note: note,
+          }),
+        );
+        if (!loading) {
+          props.navigation.navigate('TransferSuccess', {
+            amount: amount,
+            note: note,
+          });
+        }
       } else {
         ToastAndroid.show('Your pin is wrong', ToastAndroid.SHORT);
       }
-      // dispatch(UpdateUserData(token, {pin: pin}));
-      //   if (success) {
-      //     props.navigation.replace('Profile');
-      //     ToastAndroid.show('PIN updated', ToastAndroid.SHORT);
-      //   }
-      //   if (!success) {
-      //     ToastAndroid.show('PIN failed to UPDATE!', ToastAndroid.SHORT);
-      //   }
-      // } else {
-      //   ToastAndroid.show('error', ToastAndroid.SHORT);
-      // }
     }
-    setLoading(false);
   };
   return (
     <View style={style.container}>

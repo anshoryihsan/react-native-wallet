@@ -1,5 +1,8 @@
 import axios from '../../helpers/axios';
 
+const processReques = () => {
+  return {type: 'PROCESS_REQUES'};
+};
 const userData = (data) => {
   return {type: 'USER_DATA', payload: data};
 };
@@ -74,6 +77,7 @@ export const UserTransactionHistory = (token) => (dispatch) => {
 export const GetAllUserData = (token, name = null, page = 0, reset = true) => (
   dispatch,
 ) => {
+  dispatch(processReques());
   axios
     .get(`/profile/search?name=${name}&limit=4&page=${page}`, {
       headers: {token: `${token}`},
@@ -97,8 +101,7 @@ export const GetAllUserData = (token, name = null, page = 0, reset = true) => (
 
 export const getUserId = (token, data) => (dispatch) => {
   const id = data;
-  // console.log(id, 'ini id');
-  // console.log(token, 'ini token');
+  dispatch(processReques());
   axios
     .get(`/profile/${id}`, {headers: {token: `${token}`}})
     .then((res) => {
@@ -122,7 +125,7 @@ export const ClearUserHistory = () => (dispatch) => {
 };
 
 export const UploadPhoto = (token, data) => (dispatch) => {
-  console.log(data, 'sadasdqydhaud');
+  // console.log(data, 'sadasdqydhaud');
   axios
     .patch('/profile/', data, {
       headers: {

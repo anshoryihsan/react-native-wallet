@@ -8,6 +8,7 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import ContacList from '../../components/searchContact/contactList';
 import style from '../../style/transfer';
@@ -21,27 +22,21 @@ import {GetAllUserData, getUserId} from '../../redux/actions/User';
 const Transfer = (props) => {
   const [name, setName] = useState('');
   const [page, setPage] = useState(0);
-  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
   const {token} = useSelector((state) => state.Auth);
-  const {getalluserdata} = useSelector((state) => state.User);
+  const {loading, getalluserdata} = useSelector((state) => state.User);
 
   useEffect(() => {
-    setLoading(true);
     dispatch(GetAllUserData(token, name, page));
-    setLoading(false);
   }, [dispatch, token, name, page]);
-  // console.log(page, 'contactlist');
 
   const renderItem = ({item}) => {
-    // console.log(navigation.navigate(TransferAmount), 'sdasjdiqwhdiuauid');
     return (
       <TouchableOpacity
         style={styletrans.itemList}
         onPress={() => {
           dispatch(getUserId(token, item.id));
-          // props.navigation.goBack();
           props.navigation.navigate('TransferAmount');
         }}>
         <View style={styletrans.user}>
@@ -86,16 +81,22 @@ const Transfer = (props) => {
         <View style={{flexDirection: 'column'}}>
           <Text style={{fontSize: 14, marginBottom: 10}}>All Contacts</Text>
           {/* <ContacList navigation={props} namesearch={name} /> */}
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            data={getalluserdata}
-            style={styletrans.flatList}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={renderItem}
-            // onEndReached={loadMore}
-            onEndReachedThreshold={0.5}
-            initialNumToRender={4}
-          />
+          {/* <ActivityIndicator size="large" /> */}
+
+          {loading ? (
+            <ActivityIndicator size="large" color="#6379f4" />
+          ) : (
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              data={getalluserdata}
+              style={styletrans.flatList}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={renderItem}
+              // onEndReached={loadMore}
+              onEndReachedThreshold={0.5}
+              initialNumToRender={4}
+            />
+          )}
         </View>
       </View>
     </View>

@@ -12,7 +12,7 @@ const systemReducer = (state = initialState, action) => {
         ...state,
         enableNotification: payload,
       };
-    case ActionSheetIOS.setSystemSocket:
+    case 'SET_SYSTEM_SOCKET':
       return {
         ...state,
         socket: payload,

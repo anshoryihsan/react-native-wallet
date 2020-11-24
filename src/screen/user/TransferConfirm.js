@@ -16,7 +16,7 @@ const TransferConfirm = (props) => {
   const onSubmit = () => {
     setLoading(true);
     props.navigation.navigate('TransferPIN', {
-      balance: amount,
+      amount: amount,
       note: note,
     });
     setLoading(false);

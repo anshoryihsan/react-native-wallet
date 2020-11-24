@@ -7,11 +7,17 @@ const initialState = {
 
   success: false,
   message: '',
+  loading: false,
 };
 
 const User = (state = initialState, action) => {
   const {type, payload} = action;
   switch (type) {
+    case 'PROCESS_REQUES':
+      return {
+        ...state,
+        loading: true,
+      };
     case 'USER_DATA':
       return {
         ...state,
@@ -26,11 +32,13 @@ const User = (state = initialState, action) => {
       return {
         ...state,
         userdatatransaction: payload,
+        loading: false,
       };
     case 'GET_All_USER_DATA':
       return {
         ...state,
         getalluserdata: payload,
+        loading: false,
       };
     case 'INSERT_USER_DATA':
       return {
@@ -72,6 +80,7 @@ const User = (state = initialState, action) => {
       return {
         ...state,
         message: payload,
+        loading: false,
       };
     case 'CLEAR':
       return {
@@ -83,6 +92,7 @@ const User = (state = initialState, action) => {
         insertuserdata: {},
         success: false,
         message: '',
+        loading: false,
       };
     default:
       return state;

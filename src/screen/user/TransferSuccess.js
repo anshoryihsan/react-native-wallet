@@ -1,26 +1,43 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, StatusBar, Image, ScrollView} from 'react-native';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {currency} from '../../helpers/currency';
 import style from '../../style/transfer';
-import Icon from 'react-native-vector-icons/Feather';
+import Icons from 'react-native-vector-icons/AntDesign';
 import avatar from '../../assets/img/user_.webp';
 import Button from '../../components/Button/BigButton';
+import {UserData} from '../../redux/actions/User';
+import PushNotification from 'react-native-push-notification';
+import {showLocalNotification} from '../../helpers/handleNotification';
 
 const TransferSuccess = (props) => {
   const {amount, note} = props.route.params;
   const [loading, setLoading] = useState(false);
 
   const {userdatatransaction, userdata} = useSelector((state) => state.User);
+  const {token} = useSelector((state) => state.Auth);
+  const {statustransfer} = useSelector((state) => state.Transfer);
+  const {success, data} = statustransfer;
+  const dispatch = useDispatch();
 
-  const onSubmit = () => {
+  const channelId = 'transfer-notification';
+  useEffect(() => {
     setLoading(true);
-    props.navigation.navigate('TransferPIN', {
-      amount: amount,
-      note: note,
+    dispatch(UserData({token}));
+    PushNotification.createChannel({
+      channelId,
+      channelName: 'transfer',
+      channelDescription: 'transfer info',
     });
+    if (success) {
+      showLocalNotification(
+        'Transfer Success',
+        `to ${userdatatransaction.first_name}`,
+        channelId,
+      );
+    }
     setLoading(false);
-  };
+  }, []);
 
   const isActive = () => {
     return true;
@@ -28,7 +45,31 @@ const TransferSuccess = (props) => {
   return (
     <ScrollView style={style.container}>
       <StatusBar barStyle="default" backgroundColor="#6379f4" />
-      <Text>sukses?gagal</Text>
+      {success ? (
+        <View style={{marginVertical: 50, alignItems: 'center'}}>
+          <Icons name="checkcircle" size={80} color="#1EC15F" />
+          <Text
+            style={{
+              color: '#383b40',
+              fontWeight: 'bold',
+              fontSize: 20,
+            }}>
+            Transfer Success
+          </Text>
+        </View>
+      ) : (
+        <View style={{marginVertical: 50, alignItems: 'center'}}>
+          <Icons name="closecircle" size={80} color="#FF5B37" />
+          <Text
+            style={{
+              color: '#383b40',
+              fontWeight: 'bold',
+              fontSize: 20,
+            }}>
+            Transfer Failed
+          </Text>
+        </View>
+      )}
       <View
         style={{
           marginVertical: 10,
@@ -161,7 +202,20 @@ const TransferSuccess = (props) => {
         </View>
       </View>
 
-      <Button isActive={isActive} onSubmit={onSubmit} name={'Continue'} />
+      {success ? (
+        <Button
+          isActive={isActive}
+          onSubmit={() => props.navigation.navigate('Home')}
+          name={'Continue'}
+        />
+      ) : (
+        <Button
+          isActive={isActive}
+          onSubmit={() => props.navigation.navigate('TransferAmount')}
+          name={'Back To Home'}
+        />
+      )}
+      {/* <Button isActive={isActive} onSubmit={onSubmit} name={'Continue'} /> */}
     </ScrollView>
   );
 };

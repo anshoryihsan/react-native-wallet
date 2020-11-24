@@ -16,14 +16,20 @@ import avatar from '../../assets/img/user_.webp';
 import Button from '.././../components/Button/BigButton';
 
 const TransferAmont = (props) => {
-  const {userdatatransaction, userdata} = useSelector((state) => state.User);
+  const {userdatatransaction, userdata, loading} = useSelector(
+    (state) => state.User,
+  );
   const [amount, setAmount] = useState('');
   const [note, setNote] = useState('');
-  const [loading, setLoading] = useState(false);
   // console.log(userdata.balance != '');
   const onSubmit = () => {
-    setLoading(true);
-    if (amount && note && userdata.balance != '' && userdata.balance != 0) {
+    if (
+      amount &&
+      note &&
+      userdata.balance != '' &&
+      userdata.balance != 0 &&
+      !loading
+    ) {
       props.navigation.navigate('TransferConfirm', {
         amount: amount,
         note: note,
@@ -31,11 +37,16 @@ const TransferAmont = (props) => {
     } else {
       ToastAndroid.show('fill out the form correctly!', ToastAndroid.LONG);
     }
-    setLoading(false);
   };
 
   const isActive = () => {
-    if (amount && note && userdata.balance != '' && userdata.balance != 0) {
+    if (
+      amount &&
+      note &&
+      userdata.balance != '' &&
+      userdata.balance != 0 &&
+      !loading
+    ) {
       return true;
     }
     return false;

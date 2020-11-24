@@ -18,7 +18,9 @@ import {
   ChangePassword,
   ChangePin,
   Notif,
+  TransferHistory,
 } from '../screen/user';
+import {contactList} from '../components/searchContact/contactList';
 
 const Stack = createStackNavigator();
 
@@ -102,6 +104,11 @@ function HomeStack() {
       <Stack.Screen
         name="Notif"
         component={Notif}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="TransferHistory"
+        component={TransferHistory}
         options={{headerShown: false}}
       />
     </Stack.Navigator>
