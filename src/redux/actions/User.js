@@ -74,9 +74,7 @@ export const UserTransactionHistory = (token) => (dispatch) => {
     });
 };
 
-export const GetAllUserData = (token, name = null, page = 0, reset = true) => (
-  dispatch,
-) => {
+export const GetAllUserData = (token, name = null, page = 0) => (dispatch) => {
   dispatch(processReques());
   axios
     .get(`/profile/search?name=${name}&limit=4&page=${page}`, {
@@ -86,7 +84,6 @@ export const GetAllUserData = (token, name = null, page = 0, reset = true) => (
       //   console.log(res.data.data, 'transaction history');
       if (res.data.success) {
         // console.log(res);
-        if (reset) return dispatch(getAllUserData(res.data.data));
         return dispatch(getAllUserData(res.data.data));
       } else {
         // console.log(err);
@@ -125,14 +122,12 @@ export const ClearUserHistory = () => (dispatch) => {
 };
 
 export const UploadPhoto = (token, data) => (dispatch) => {
-  // console.log(data, 'sadasdqydhaud');
+  console.log(data, 'sadasdqydhaud');
   axios
-    .patch('/profile/', data, {
+    .patch('/profile', data, {
       headers: {
         token: `${token}`,
         'Content-Type': 'multipart/form-data',
-        // Accept: '*/*',
-        // Connection: 'keep-alive',
       },
     })
     .then((res) => {

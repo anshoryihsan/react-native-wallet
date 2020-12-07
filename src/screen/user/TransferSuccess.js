@@ -24,12 +24,12 @@ const TransferSuccess = (props) => {
   useEffect(() => {
     setLoading(true);
     dispatch(UserData({token}));
-    PushNotification.createChannel({
-      channelId,
-      channelName: 'transfer',
-      channelDescription: 'transfer info',
-    });
     if (success) {
+      PushNotification.createChannel({
+        channelId,
+        channelName: 'transfer',
+        channelDescription: 'transfer info',
+      });
       showLocalNotification(
         'Transfer Success',
         `to ${userdatatransaction.first_name}`,

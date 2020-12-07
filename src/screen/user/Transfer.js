@@ -9,6 +9,8 @@ import {
   TouchableOpacity,
   Image,
   ActivityIndicator,
+  ScrollView,
+  SafeAreaView,
 } from 'react-native';
 import ContacList from '../../components/searchContact/contactList';
 import style from '../../style/transfer';
@@ -33,27 +35,29 @@ const Transfer = (props) => {
 
   const renderItem = ({item}) => {
     return (
-      <TouchableOpacity
-        style={styletrans.itemList}
-        onPress={() => {
-          dispatch(getUserId(token, item.id));
-          props.navigation.navigate('TransferAmount');
-        }}>
-        <View style={styletrans.user}>
-          <Image source={avatar} style={styletrans.imgList} />
-          <View style={styletrans.userName}>
-            <Text style={{color: '#4D4B57', fontSize: 16}}>
-              {item.first_name}
-            </Text>
-            <Text style={{color: '#7A7886', fontSize: 14}}>{item.phone}</Text>
+      <>
+        <TouchableOpacity
+          style={styletrans.itemList}
+          onPress={() => {
+            dispatch(getUserId(token, item.id));
+            props.navigation.navigate('TransferAmount');
+          }}>
+          <View style={styletrans.user}>
+            <Image source={avatar} style={styletrans.imgList} />
+            <View style={styletrans.userName}>
+              <Text style={{color: '#4D4B57', fontSize: 16}}>
+                {item.first_name}
+              </Text>
+              <Text style={{color: '#7A7886', fontSize: 14}}>{item.phone}</Text>
+            </View>
           </View>
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </>
     );
   };
 
   return (
-    <View style={style.container}>
+    <SafeAreaView style={style.container}>
       <StatusBar barStyle="default" backgroundColor="#6379f4" />
       <View style={style.nav}>
         <Icon
@@ -72,12 +76,14 @@ const Transfer = (props) => {
           <Icon name="search1" size={20} color="#A9A9A9" />
           <TextInput
             placeholder="Search receiver here"
-            onChangeText={(name) => setName(name)}
+            onChangeText={(name) => {
+              setName(name), setPage(0);
+            }}
             defaultValue={name}
           />
         </View>
       </View>
-      <View style={style.content}>
+      <SafeAreaView style={style.content}>
         <View style={{flexDirection: 'column'}}>
           <Text style={{fontSize: 14, marginBottom: 10}}>All Contacts</Text>
           {/* <ContacList navigation={props} namesearch={name} /> */}
@@ -86,20 +92,37 @@ const Transfer = (props) => {
           {loading ? (
             <ActivityIndicator size="large" color="#6379f4" />
           ) : (
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              data={getalluserdata}
-              style={styletrans.flatList}
-              keyExtractor={(item) => item.id.toString()}
-              renderItem={renderItem}
-              // onEndReached={loadMore}
-              onEndReachedThreshold={0.5}
-              initialNumToRender={4}
-            />
+            <SafeAreaView>
+              <FlatList
+                ListFooterComponent={
+                  <View style={{padding: 0.1, alignSelf: 'center'}}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        if (getalluserdata.length <= 1) return setPage(0);
+                        setPage(page + 1);
+                      }}>
+                      {/* {getalluserdata.length===0?} */}
+                      <Text style={{fontSize: 10}}>Load More</Text>
+                    </TouchableOpacity>
+                    {/* {loadingMore &&
+                  <Text style={{fontWeight: '600',}}>Loading More...</Text>
+                } */}
+                  </View>
+                }
+                showsVerticalScrollIndicator={true}
+                data={getalluserdata}
+                style={styletrans.flatList}
+                keyExtractor={(item, index) => index}
+                renderItem={renderItem}
+                // onEndReached={loadMore}
+                // onEndReachedThreshold={0.5}
+                // initialNumToRender={4}
+              />
+            </SafeAreaView>
           )}
         </View>
-      </View>
-    </View>
+      </SafeAreaView>
+    </SafeAreaView>
   );
 };
 

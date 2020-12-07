@@ -13,7 +13,7 @@ import {currency} from '../../helpers/currency';
 import style from '../../style/transfer';
 import Icon from 'react-native-vector-icons/Feather';
 import avatar from '../../assets/img/user_.webp';
-import Button from '.././../components/Button/BigButton';
+import Button from '../../components/Button/BigButton';
 
 const TransferAmont = (props) => {
   const {userdatatransaction, userdata, loading} = useSelector(

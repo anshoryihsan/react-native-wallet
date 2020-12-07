@@ -62,4 +62,10 @@ export default StyleSheet.create({
     padding: 8,
     justifyContent: 'center',
   },
+  imgUser: {
+    width: 60,
+    height: 60,
+    borderRadius: 10,
+    resizeMode: 'cover',
+  },
 });

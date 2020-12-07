@@ -21,6 +21,7 @@ import style from '../../style/Profile';
 import avatar from '../../assets/img/user_.webp';
 import Icon from 'react-native-vector-icons/Feather';
 import ImagePicker from 'react-native-image-picker';
+import {IMAGE_URL} from '../../helpers/environment';
 
 const Profile = (props) => {
   const {User} = useSelector((state) => state);
@@ -41,47 +42,47 @@ const Profile = (props) => {
     dispatch(ClearUserHistory());
   };
   const handleChoose = () => {
-    ImagePicker.launchImageLibrary(
-      {
-        mediaType: 'image',
-      },
-      (response) => {
-        // console.log(response);
-        const formData = new FormData();
-        formData.append('file', {
-          mimetype: response.type,
-          uri: response.uri,
-          originalname: response.fileName,
-        });
-        dispatch(UploadPhoto(token, {last_name: 'asad', pin: 555555}));
-      },
-    );
-    // const options = {
-    //   title: 'select-picture',
-    //   storageOptions: {
+    // ImagePicker.launchImageLibrary(
+    //   {
     //     mediaType: 'image',
     //   },
-    // };
-    // ImagePicker.showImagePicker(options, (response) => {
-    //   // console.log(response, 'option photo/galeri');
-    //   if (response.didCancel) {
-    //     ToastAndroid.show('Cancle', ToastAndroid.SHORT);
-    //   } else if (response.error) {
-    //     ToastAndroid.show(response.error, ToastAndroid.SHORT);
-    //   } else {
-    //     // (response) => {
-    //     console.log(response);
+    //   (response) => {
+    //     // console.log(response);
     //     const formData = new FormData();
-    //     formData.append('image', {
+    //     formData.append('file', {
+    //       mimetype: response.type,
     //       uri: response.uri,
-    //       name: response.fileName,
-    //       type: response.type,
+    //       originalname: response.fileName,
     //     });
-    //     console.log(formData, 'photo');
-    //     dispatch(UploadPhoto(formData, token));
-    //     // };
-    //   }
-    // });
+    //     dispatch(UploadPhoto(token, {last_name: 'asad', pin: 555555}));
+    //   },
+    // );
+    const options = {
+      title: 'select-picture',
+      storageOptions: {
+        mediaType: 'photo',
+      },
+    };
+    ImagePicker.showImagePicker(options, (response) => {
+      // console.log(response, 'option photo/galeri');
+      if (response.didCancel) {
+        ToastAndroid.show('Cancle', ToastAndroid.SHORT);
+      } else if (response.error) {
+        ToastAndroid.show(response.error, ToastAndroid.SHORT);
+      } else {
+        // (response) => {
+        console.log(response);
+        const formData = new FormData();
+        formData.append('photo', {
+          uri: response.uri,
+          name: response.fileName,
+          type: response.type,
+        });
+        // console.log(formData, 'photo');
+        dispatch(UploadPhoto(token, formData));
+        // };
+      }
+    });
   };
   return (
     <View style={style.container}>
@@ -102,7 +103,9 @@ const Profile = (props) => {
         <View style={style.profile}>
           <Image
             source={
-              User?.userdata?.photo ? {uri: User.userdata.photo} : {avatar}
+              User?.userdata?.photo
+                ? {uri: IMAGE_URL + User.userdata.photo}
+                : {avatar}
             }
             style={style.imgUser}
           />

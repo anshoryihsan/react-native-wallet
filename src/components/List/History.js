@@ -11,6 +11,7 @@ import style from './style';
 import avatar from '../../assets/img/user_.webp';
 import {useSelector, useDispatch} from 'react-redux';
 import {HistoryTransfer} from '../../redux/actions/Transfer';
+import {IMAGE_URL} from '../../helpers/environment';
 
 function History(params) {
   const dispatch = useDispatch();
@@ -26,13 +27,45 @@ function History(params) {
     return (
       <View style={style.itemList}>
         <View style={style.user}>
-          {item.photo === null ? (
+          <Image
+            // source={{uri: IMAGE_URL + item.from_photo}}
+            source={
+              item.profile_id === userdata.id
+                ? {uri: IMAGE_URL + item.to_photo}
+                : {uri: IMAGE_URL + item.from_photo}
+            }
+            style={style.imgList}
+          />
+          {/* {item.profile_id === userdata.id ? (
+            <Image
+              // source={{uri: IMAGE_URL + item.from_photo}}
+              source={{uri: IMAGE_URL + item.to_photo}}
+              style={style.imgList}
+            />
+          ) : (
+            <Image
+              // source={{uri: IMAGE_URL + item.from_photo}}
+              source={{uri: IMAGE_URL + item.from_photo}}
+              style={style.imgList}
+            />
+          )} */}
+          {/* {item.photo === null ? (
             <Image source={avatar} style={style.imgList} />
           ) : item.profile_id === userdata.id ? (
-            <Image source={{uri: item.from_photo}} style={style.imgList} />
+            <Image
+              // source={{uri: IMAGE_URL + item.from_photo}}
+              source={
+                User?.userdata?.photo
+                  ? {uri: IMAGE_URL + User.userdata.photo}
+                  : {avatar}
+              style={style.imgList}
+            />
           ) : (
-            <Image source={{uri: item.to_photo}} style={style.imgList} />
-          )}
+            <Image
+              // source={{uri: IMAGE_URL + item.to_photo}}
+              style={style.imgList}
+            />
+          )} */}
           <View style={style.userName}>
             <Text style={{color: '#4D4B57', fontSize: 16}}>
               {item.profile_id === userdata.id ? item.to_ : item.from_}

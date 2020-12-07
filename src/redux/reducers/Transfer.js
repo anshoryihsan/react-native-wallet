@@ -2,6 +2,7 @@ const initialState = {
   // data: [],
   statustransfer: {},
   transferhistory: {},
+  historyfilter: {},
   loading: false,
 };
 
@@ -23,6 +24,12 @@ const Transfer = (state = initialState, action) => {
       return {
         ...state,
         transferhistory: payload,
+        loading: false,
+      };
+    case 'TRANSFER_FILTER':
+      return {
+        ...state,
+        historyfilter: payload,
         loading: false,
       };
     default:

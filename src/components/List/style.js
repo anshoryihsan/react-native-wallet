@@ -26,8 +26,8 @@ export default StyleSheet.create({
     height: 56,
   },
   imgList: {
-    width: 56,
-    height: 56,
+    width: 46,
+    height: 46,
     borderRadius: 10,
     marginRight: 10,
     resizeMode: 'cover',

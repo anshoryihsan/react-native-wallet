@@ -37,7 +37,7 @@ export default StyleSheet.create({
     elevation: 1,
   },
   content: {
-    paddingVertical: 30,
+    paddingVertical: 20,
     marginHorizontal: 10,
   },
   imgList: {

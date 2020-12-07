@@ -14,8 +14,9 @@ import {
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon2 from 'react-native-vector-icons/AntDesign';
 import {UserData} from '../../redux/actions/User';
-import {io} from 'socket.io-client';
-import {SOCKET_URL} from '../../helpers/environment';
+import ioClient from 'socket.io-client';
+// import {io} from 'socket.io-client';
+import {SOCKET_URL, IMAGE_URL} from '../../helpers/environment';
 import PushNotification from 'react-native-push-notification';
 import {setSystemSocket} from '../../redux/actions/System';
 import {showLocalNotification} from '../../helpers/handleNotification';
@@ -23,49 +24,69 @@ import TransHistory from '../../components/List/History';
 
 function Home(props) {
   const {Auth, User} = useSelector((state) => state);
-  // const {socket} = useSelector((state) => state.System);
+  const {id} = useSelector((state) => state.User.userdata);
+  const [balance_, setBalance_] = useState(User.userdata.balance || 0);
   const dispatch = useDispatch();
+  // useEffect(() => {
+  // dispatch(UserData(Auth.token));
+  //   // setId();
+  // }, []);
+  // const {id} = useSelector((state) => state.User.userdata);
+
+  // const setId = async () => {
+  //   return await setId_user(useSelector((state) => state.user));
+  // };
+  // console.log(id, 'idididididUSERRRRR');
+  const socket = ioClient(SOCKET_URL, {query: {id}});
+  // const socket = ioClient(SOCKET_URL);
 
   useEffect(() => {
-    dispatch(UserData(Auth.token));
-  }, []);
+    if (socket == null) return;
+    // socket.emit('info_balance', {id});
+    socket.on('info_balance', (data) => {
+      const {balance} = data[0];
+      setBalance_(balance);
+      dispatch(UserData(Auth.token));
+    });
 
-  const {id} = useSelector((state) => state.User.userdata);
-  // const {token} = useSelector((state) => state.User.userdata);
-  // console.log(id);
-  let socket = io(SOCKET_URL, {
-    query: {id},
-  });
-  // useEffect(() => {
-  //   if (socket !== null) return;
-  //   let newSocket = io(SOCKET_URL, {
-  //     query: {id},
-  //   });
-  //   // console.log(User.userdata.id, 'asdasdjak');
-  //   dispatch(setSystemSocket(io(SOCKET_URL)));
-  //   // return () => newSocket.close();
-  // }, [socket, SOCKET_URL, id]);
-  // }, []);
+    // if (socket === null) return;
+    // PushNotification.createChannel(
+    //   {
+    //     channelId,
+    //     channelName: 'transfer',
+    //     channelDescription: 'transfer info',
+    //   },
+    //   // (created) => console.log(`createChannel returned ${created}`),
+    // );
+    // socket.on('transaction', ({title, message}) => {
+    //   console.log('ini notifikasi');
+    //   console.log(title);
+    //   console.log(message);
+    //   // dispatch(UserData(Auth.token));
+    //   // showLocalNotification(channelId, title, message);
+    // });
+    // socket.off('transaction');
+    return () => {
+      // socket.close();
+      socket.off('info_balance');
+    };
+  }, [socket, dispatch, id]);
+
   const channelId = 'transfer-notification';
   useEffect(() => {
-    if (socket === null) return;
-    PushNotification.createChannel(
-      {
-        channelId,
-        channelName: 'transfer',
-        channelDescription: 'transfer info',
-      },
-      (created) => console.log(`createChannel returned ${created}`),
-    );
-    socket.on('transaction', ({title, message}) => {
+    socket.on('transaction', (payload) => {
+      console.log('ini notifikasi');
+      console.log(payload);
       dispatch(UserData(Auth.token));
+      const {message, title} = payload;
       showLocalNotification(channelId, title, message);
     });
     return () => {
       socket.off('transaction');
     };
-  }, [socket, channelId]);
+  }, [channelId, dispatch]);
 
+  // console.log(balance_, 'ini payload');
   return (
     <View style={style.container}>
       <StatusBar barStyle="default" backgroundColor="#6379f4" />
@@ -82,7 +103,10 @@ function Home(props) {
           {User.userdata === undefined ? (
             <Image source={avatar} style={style.imgUser} />
           ) : User.userdata.photo !== null ? (
-            <Image source={{uri: User.userdata.photo}} style={style.imgUser} />
+            <Image
+              source={{uri: IMAGE_URL + User.userdata.photo}}
+              style={style.imgUser}
+            />
           ) : (
             <Image source={avatar} style={style.imgUser} />
           )}
@@ -127,7 +151,7 @@ function Home(props) {
           {User.userdata === undefined ? (
             <Text style={style.balanceAmont}>Rp - </Text>
           ) : User.userdata.balance !== null ? (
-            <Text style={style.balanceAmont}>Rp {User.userdata.balance}</Text>
+            <Text style={style.balanceAmont}>Rp {balance_}</Text>
           ) : (
             <Text style={style.balanceAmont}>Rp - </Text>
           )}
@@ -184,7 +208,9 @@ function Home(props) {
               See all
             </Text>
           </View>
-          <TransHistory navigation={props} />
+          <SafeAreaView style={{flex: 1}}>
+            <TransHistory navigation={props} />
+          </SafeAreaView>
         </ScrollView>
       </SafeAreaView>
     </View>
