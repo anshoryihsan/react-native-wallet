@@ -9,7 +9,9 @@ Zwallet-API adalah sebuah aplikasi _backend_ untuk [Zwallet-web](https://github.
 3. `~$ yarn install` atau `~$ npm install`
 
 #### ScreenShots
-
+![alt text](/src/assets/img/zwallet/zwallet-mobile-splash_screen.jpg?raw=true "splash screen")
+![alt text](/src/assets/img/zwallet/zwallet-mobile-dashboard.jpg?raw=true "dasboard")
+![alt text](/src/assets/img/zwallet/zwallet-mobile-profile.jpg?raw=true "profile")
 <div align="center">
 	<img width="250" src"https://github.com/anshoryihsan/react-native-wallet/blob/master/src/assets/img/zwallet/zwallet-mobile-splash_screen.jpg" alt="splash screen"/>
     <img width="250" src"https://github.com/anshoryihsan/react-native-wallet/blob/master/src/assets/img/zwallet/zwallet-mobile-dashboard.jpg" alt="dasboard"/>
