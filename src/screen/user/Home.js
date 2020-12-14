@@ -49,25 +49,25 @@ function Home(props) {
       dispatch(UserData(Auth.token));
     });
 
-    // if (socket === null) return;
-    // PushNotification.createChannel(
-    //   {
-    //     channelId,
-    //     channelName: 'transfer',
-    //     channelDescription: 'transfer info',
-    //   },
-    //   // (created) => console.log(`createChannel returned ${created}`),
-    // );
-    // socket.on('transaction', ({title, message}) => {
-    //   console.log('ini notifikasi');
-    //   console.log(title);
-    //   console.log(message);
-    //   // dispatch(UserData(Auth.token));
-    //   // showLocalNotification(channelId, title, message);
-    // });
-    // socket.off('transaction');
+    if (socket === null) return;
+    PushNotification.createChannel(
+      {
+        channelId,
+        channelName: 'transfer',
+        channelDescription: 'transfer info',
+      },
+      // (created) => console.log(`createChannel returned ${created}`),
+    );
+    socket.on('transaction', ({title, message}) => {
+      console.log('ini notifikasi');
+      console.log(title);
+      console.log(message);
+      // dispatch(UserData(Auth.token));
+      // showLocalNotification(channelId, title, message);
+    });
     return () => {
       // socket.close();
+      socket.off('transaction');
       socket.off('info_balance');
     };
   }, [socket, dispatch, id]);
@@ -175,7 +175,11 @@ function Home(props) {
           <Icon name="arrow-up" color="#6379f4" size={30} />
           <Text>Transfer</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={style.topUp}>
+        <TouchableOpacity
+          style={style.topUp}
+          onPress={() => {
+            props.navigation.navigate('TopUp');
+          }}>
           <Icon2 name="plus" color="#6379f4" size={30} />
           <Text>Top Up</Text>
         </TouchableOpacity>

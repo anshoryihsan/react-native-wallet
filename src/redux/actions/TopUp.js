@@ -1,41 +1,25 @@
-// import Axios from "axios";
+import axios from '../../helpers/axios';
 
-// const TopUpRequest = () => {
-//   return { type: "TOPUP_REQUEST" };
-// };
-// const TopUpSuccess = (data) => {
-//   return { type: "TOPUP_SUCCESS", payload: data };
-// };
-// const TopUpError = (error) => {
-//   return { type: "TOPUP_ERROR", payload: error };
-// };
-
-// export const getTopUp = (fields) => {
-//   return (dispatch) => {
-//     dispatch(TopUpRequest());
-//     //   console.log(fields, "skaskddksdwidaiwdaiPHONE");
-//     // return await Axios.patch('http://localhost:8080/api/v1/profile', { email: fields.email },);
-//     return Axios({
-//       method: "GET",
-//       url: "http://localhost:8080/api/v1/top-up",
-//       headers: {
-//         token: fields.token,
-//       },
-//     })
-//       .then((res) => {
-//         // console.log(res.data.success, "hasil");
-//         if (res.data.success) {
-//           const data = res.data;
-//           dispatch(TopUpSuccess(data));
-//           // console.log(data.data[0]);
-//         } else {
-//           const message = res.data.data;
-//           dispatch(TopUpError(message));
-//         }
-//       })
-//       .catch((err) => {
-//         const message = err.message;
-//         dispatch(TopUpError(message));
-//       });
-//   };
-// };
+const TopUpRequest = () => {
+  return {type: 'PROCESS_REQUEST_TOPUP'};
+};
+const getDataTopUp = (data) => {
+  return {type: 'GET_DATA_HOW_TO_TOPUP', payload: data};
+};
+export const GetDataTopUp = (token) => (dispatch) => {
+  dispatch(TopUpRequest);
+  axios
+    .get('/top-up', {headers: {token: `${token}`}})
+    .then((res) => {
+      //   console.log(res.data, 'userrr data');
+      if (res.data.success) {
+        dispatch(getDataTopUp(res.data.data));
+      } else {
+        dispatch(getDataTopUp(res.data.data));
+      }
+    })
+    .catch((err) => {
+      //   console.log(err);
+      dispatch(getDataTopUp(err.data.data));
+    });
+};

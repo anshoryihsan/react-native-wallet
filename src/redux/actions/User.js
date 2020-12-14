@@ -15,17 +15,8 @@ const userDataTransaction = (data) => {
 const getAllUserData = (data) => {
   return {type: 'GET_All_USER_DATA', payload: data};
 };
-const uploadPhoto = (data) => {
-  return {type: 'UPLOAD_PHOTO', payload: data};
-};
-const updateUserPhone = (data) => {
-  return {type: 'UPDATE_USER_PHONE', payload: data};
-};
 const updateUserData = (data) => {
   return {type: 'UPDATE_USER_DATA', payload: data};
-};
-const updateData = (data) => {
-  return {type: 'UPDATE_DATA', payload: data};
 };
 const insertData = (data) => {
   return {type: 'INSERT_DATA', payload: data};
@@ -114,7 +105,7 @@ export const getUserId = (token, data) => (dispatch) => {
       // console.log(res, 'berhasil');
     })
     .catch((err) => {
-      return dispatch(statusError(res.data.data));
+      return dispatch(statusError(err.data.data));
     });
 };
 export const ClearUserHistory = () => (dispatch) => {

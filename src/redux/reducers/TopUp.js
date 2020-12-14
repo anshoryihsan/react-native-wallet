@@ -1,32 +1,24 @@
-// const initialState = {
-//   data: [],
-//   loading: false,
-// };
+const initialState = {
+  datahowtopup: [],
+  loading: false,
+};
 
-// const Transfer = (state = initialState, action = {}) => {
-//   switch (action.type) {
-//     case "TOPUP_REQUEST":
-//       return {
-//         ...state,
-//         loading: true,
-//       };
-//     case "TOPUP_SUCCESS":
-//       return {
-//         ...state,
-//         loading: false,
-//         isLogin: true,
-//         data: action.payload.data,
-//       };
-//     case "TOPUP_ERROR":
-//       return {
-//         ...state,
-//         loading: false,
-//         isLogin: false,
-//         data: [],
-//         error: action.payload,
-//       };
-//     default:
-//       return state;
-//   }
-// };
-// export default Transfer;
+const TopUp = (state = initialState, action = {}) => {
+  const {type, payload} = action;
+  switch (type) {
+    case 'PROCESS_REQUEST_TOPUP':
+      return {
+        ...state,
+        loading: true,
+      };
+    case 'GET_DATA_HOW_TO_TOPUP':
+      return {
+        ...state,
+        datahowtopup: payload,
+        loading: false,
+      };
+    default:
+      return state;
+  }
+};
+export default TopUp;

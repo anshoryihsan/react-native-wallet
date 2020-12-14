@@ -28,7 +28,6 @@ function History(params) {
       <View style={style.itemList}>
         <View style={style.user}>
           <Image
-            // source={{uri: IMAGE_URL + item.from_photo}}
             source={
               item.profile_id === userdata.id
                 ? {uri: IMAGE_URL + item.to_photo}
@@ -36,36 +35,6 @@ function History(params) {
             }
             style={style.imgList}
           />
-          {/* {item.profile_id === userdata.id ? (
-            <Image
-              // source={{uri: IMAGE_URL + item.from_photo}}
-              source={{uri: IMAGE_URL + item.to_photo}}
-              style={style.imgList}
-            />
-          ) : (
-            <Image
-              // source={{uri: IMAGE_URL + item.from_photo}}
-              source={{uri: IMAGE_URL + item.from_photo}}
-              style={style.imgList}
-            />
-          )} */}
-          {/* {item.photo === null ? (
-            <Image source={avatar} style={style.imgList} />
-          ) : item.profile_id === userdata.id ? (
-            <Image
-              // source={{uri: IMAGE_URL + item.from_photo}}
-              source={
-                User?.userdata?.photo
-                  ? {uri: IMAGE_URL + User.userdata.photo}
-                  : {avatar}
-              style={style.imgList}
-            />
-          ) : (
-            <Image
-              // source={{uri: IMAGE_URL + item.to_photo}}
-              style={style.imgList}
-            />
-          )} */}
           <View style={style.userName}>
             <Text style={{color: '#4D4B57', fontSize: 16}}>
               {item.profile_id === userdata.id ? item.to_ : item.from_}
