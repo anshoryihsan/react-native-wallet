@@ -1,11 +1,11 @@
-<h1 align="center"><a href="#">Zwallet-API</a></h1>
+<h1 align="center"><a href="#">Zwallet</a></h1>
 
 Zwallet-API adalah sebuah aplikasi _backend_ untuk [Zwallet-web](https://github.com/anshoryihsan/zwallet-web.git) dan [Zwallet-mobile](https://github.com/anshoryihsan/react-native-wallet.git), dibuat dengan [npm](https://nodejs.org/en/download/), [React-Native](https://reactnative.dev/docs/getting-started) dan [React-Native-CLI](https://www.npmjs.com/package/react-native-cli).
 
 #### Dowload & Install Project
 
 1. `~$ git clone https://github.com/anshoryihsan/zwallet_serverSocketIO.git`
-2. `~$ cd zwallet_serverSocketIO`
+2. `~$ cd react-native-wallet`
 3. `~$ yarn install` atau `~$ npm install`
 
 #### ScreenShots
